@@ -2,12 +2,21 @@
   "name": "fullstack-app",
   "version": "1.0.0",
   "scripts": {
-    "frontend": "npm run dev --prefix frontend",
-    "backend": "node backend/server.js",
-    "dev": "npm run frontend & npm run backend"
+    "frontend:dev": "npm run dev --prefix frontend",
+    "backend:dev": "npm run dev --prefix backend",
+    "dev": "concurrently \"npm run frontend:dev\" \"npm run backend:dev\"",
+    "frontend:build": "npm run build --prefix frontend",
+    "backend:build": "npm run build --prefix backend",
+    "build": "concurrently \"npm run frontend:build\" \"npm run backend:build\"",
+    "frontend:start": "npm start --prefix frontend",
+    "backend:start": "npm start --prefix backend",
+    "start": "concurrently \"npm run frontend:start\" \"npm run backend:start\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
 }
