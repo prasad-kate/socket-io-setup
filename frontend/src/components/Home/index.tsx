@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
 function Home() {
@@ -6,24 +7,46 @@ function Home() {
     transports: ["websocket", "polling"],
   });
 
-  socket.on("connect", () => {
-    console.log("Connected to server");
-  });
+  const [messages, setMessage] = useState<string[]>([]);
 
-  socket.on("message", (msg) => {
-    console.log("Message from server:", msg);
-  });
+  useEffect(() => {
+    socket.on("connect", () => {
+      console.log("Connected to server");
+    });
+
+    socket.on("message", (msg) => {
+      setMessage((prev) => [...prev, msg]);
+    });
+
+    return () => {
+      socket.off("connect");
+      socket.off("message");
+    };
+  }, []);
 
   const sendMessage = () => {
     socket.emit("message", "Hello from client!");
+  };
+  const clearMessage = () => {
+    setMessage([]);
   };
 
   return (
     <div className="main-container">
       <p>Socket IO</p>
-      <button className="emit-button" onClick={sendMessage}>
-        Emit
-      </button>
+      <div className="button-container">
+        <button className="emit-button" onClick={sendMessage}>
+          Emit Message
+        </button>
+        <button className="emit-button" onClick={clearMessage}>
+          Clear
+        </button>
+      </div>
+      <ul>
+        {messages?.map((msg, idx) => {
+          return <li key={idx}>{msg}</li>;
+        })}
+      </ul>
     </div>
   );
 }
