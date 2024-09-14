@@ -1,0 +1,13 @@
+/* home page styles*/
+
+.emit-button {
+  padding: 5px 10px;
+}
+
+.main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  height: 100vh;
+}
